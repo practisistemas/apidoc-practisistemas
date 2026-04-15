@@ -12,6 +12,7 @@
   * [Retiros Corresponsalía](reference/web-services/retiros-corresponsalia.md)
   * [Depósitos Corresponsalía](reference/web-services/depositos-corresponsalia.md)
   * [Pines Digitales](reference/web-services/pines-digitales.md)
+  * [Servicios y Pagos](reference/web-services/servicios-pagos.md)
   * [Payments API](reference/web-services/payments-api.md)
 
 ***

@@ -13,25 +13,24 @@ El código `tipo` en `consultaProducto` debe ser `2` para todos los pines de est
 
 ## Catálogo de productos
 
-| Código | Nombre comercial                 | Requiere email cliente | Requiere KYC completo |
-| ------ | -------------------------------- | ---------------------- | --------------------- |
-| `ro`   | Roblox Pin                       | —                      | —                     |
-| `mt`   | Minecraft Pin                    | —                      | —                     |
-| `mf`   | McAfee Pin                       | —                      | —                     |
-| `ff`   | FreeFire Pin                     | —                      | —                     |
-| `dg`   | DirecTV GO Pin                   | —                      | —                     |
-| `ck`   | Cinemark Pin Cinecombo           | —                      | —                     |
-| `c2`   | Cinemark Pin Confitería          | —                      | —                     |
-| `c3`   | Procinal Pin Cinecombo           | —                      | —                     |
-| `c4`   | Procinal Pin Confitería          | —                      | —                     |
-| `c5`   | Cinecolombia Pin Cinecombo       | —                      | —                     |
-| `c6`   | Cinecolombia Pin Confitería      | —                      | —                     |
-| `fe`   | Pin Factura Electrónica          | ✅                      | —                     |
-| `ga`   | GAG Apuestas                     | ✅                      | ✅                     |
+| Código | Nombre comercial                 | Requiere email cliente |
+| ------ | -------------------------------- | ---------------------- |
+| `ro`   | Roblox Pin                       | —                      |
+| `mt`   | Minecraft Pin                    | —                      |
+| `mf`   | McAfee Pin                       | —                      |
+| `ff`   | FreeFire Pin                     | —                      |
+| `dg`   | DirecTV GO Pin                   | —                      |
+| `ck`   | Cinemark Pin Cinecombo           | —                      |
+| `c2`   | Cinemark Pin Confitería          | —                      |
+| `c3`   | Procinal Pin Cinecombo           | —                      |
+| `c4`   | Procinal Pin Confitería          | —                      |
+| `c5`   | Cinecolombia Pin Cinecombo       | —                      |
+| `c6`   | Cinecolombia Pin Confitería      | —                      |
+| `fe`   | Pin Factura Electrónica          | ✅                      |
 
 ***
 
-## Flujo estándar (sin KYC)
+## Flujo estándar
 
 Aplica a: `ro, mt, mf, ff, dg, ck, c2, c3, c4, c5, c6`
 
@@ -90,10 +89,10 @@ Si el comercio desea que Practisistemas envíe el pin por SMS, debe poner en `ce
 
 ***
 
-## Casos especiales
+## Caso especial — Pin Factura Electrónica (fe)
 
 {% tabs %}
-{% tab title="Pin Factura Electrónica (fe)" %}
+{% tab title="fe" %}
 
 Además del celular destino, requiere el **correo electrónico** del cliente donde se facturará el producto.
 
@@ -117,41 +116,6 @@ $response = $client->call('pracRec', $params);
 ```
 {% endtab %}
 
-{% tab title="GAG Apuestas (ga)" %}
-
-Producto con **KYC completo** — requiere documento, nombre y correo del adquirente. El sistema valida:
-
-* `documentoGa` — entero con mínimo 4 dígitos.
-* `nombreGa` — alfanumérico con mínimo 4 caracteres (solo letras, números y espacios).
-* `emailGa` — con mínimo 4 caracteres, formato libre (el servidor sanitiza).
-
-**Código operador:** `ga`
-
-<table><thead><tr><th width="170">Campo jsonAdicional</th><th width="260">Detalle</th><th width="110">Tipo</th><th>Ejemplo</th></tr></thead><tbody><tr><td>documentoGa</td><td>Documento del adquirente (solo números, mín. 4 dígitos)</td><td>string</td><td>"1020304050"</td></tr><tr><td>nombreGa</td><td>Nombre y apellidos (mín. 4 caracteres, solo letras/números/espacios)</td><td>string</td><td>"JUAN PEREZ"</td></tr><tr><td>emailGa</td><td>Correo electrónico (mín. 4 caracteres)</td><td>string</td><td>"juan@correo.com"</td></tr></tbody></table>
-
-```php
-$data = json_encode([
-    "documentoGa" => "1020304050",
-    "nombreGa"    => "JUAN PEREZ",
-    "emailGa"     => "juan@correo.com"
-]);
-
-$params = [
-    'idcomercio' => 01234, 'claveventa' => 1234, 'idtrans' => 123456,
-    'celular' => '3100000000', 'operador' => 'ga',
-    'valor' => 'GAG_APUESTA_1',
-    'jsonAdicional' => $data,
-];
-$response = $client->call('pracRec', $params);
-```
-
-```json
-// Errores específicos de KYC
-{ "reply":"errord", "descerr":"El Nombre digitado no es valido" }   // nombre < 4 chars
-{ "reply":"errord", "descerr":"El Email digitado no es valido" }    // email < 4 chars
-{ "reply":"errord", "descerr":"El Documento digitado no es valido" } // doc < 4 dígitos
-```
-{% endtab %}
 {% endtabs %}
 
 ***
