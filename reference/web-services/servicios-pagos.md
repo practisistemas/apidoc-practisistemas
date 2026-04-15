@@ -13,6 +13,7 @@ Productos que no encajan en recargas, paquetes, retiros ni pines: juegos de suer
 | `ss`   | **Pago Seguridad Social**    | ✅                    | Aportes Colpensiones (voluntario / obligatorio)    |
 | `dp`   | **Depósito tpaga**           | ✅ (obtiene `tx_id`)  | Pago de referencia                                 |
 | `ga`   | **Seguro GEA**               | —                    | KYC completo del adquirente                        |
+| `bw`   | **Bwin Apuestas**            | ✅ (valida cédula)    | Flujo con `idPre`; valor lo fija el servidor       |
 
 ***
 
@@ -210,6 +211,66 @@ $response = $client->call('pracRec', $params);
 { "reply":"errord", "descerr":"El Email digitado no es valido" }    // < 4 caracteres
 { "reply":"errord", "descerr":"El Documento digitado no es valido" }// < 4 dígitos
 ```
+{% endtab %}
+
+{% tab title="Bwin Apuestas (bw)" %}
+
+Recarga de cuenta Bwin para apuestas online. Flujo en dos pasos: **validar documento + monto** para obtener un `idPre`, luego **vender** referenciando ese `idPre`. El servidor fija el valor real de venta a partir de lo autorizado por Bwin (no del `valor` enviado en `pracRec`).
+
+**Código operador:** `bw`
+**PreConsulta:** obligatoria — proceso interno `bwinCheckDoc` (ruta `conexredRest.consultaApuestas`).
+
+### 1. Validar documento y obtener `idPre`
+
+<table><thead><tr><th width="170">Parámetro</th><th width="260">Detalle</th><th width="110">Tipo</th><th>Ejemplo</th></tr></thead><tbody><tr><td>idcomercio</td><td>Id comercio</td><td>int</td><td>01234</td></tr><tr><td>claveventa</td><td>Clave venta</td><td>string</td><td>"1234"</td></tr><tr><td>tipoConsulta</td><td>Nombre del proceso interno</td><td>string</td><td>"bwinCheckDoc"</td></tr><tr><td>cedula</td><td>Cédula del apostador (mínimo 5 dígitos)</td><td>string</td><td>"1020304050"</td></tr><tr><td>valorCompra</td><td>Valor solicitado por el cliente (mínimo 10.000)</td><td>string</td><td>"20000"</td></tr></tbody></table>
+
+```php
+$params = [
+    'idcomercio'   => 01234,
+    'claveventa'   => 1234,
+    'tipoConsulta' => 'bwinCheckDoc',
+    'data'         => json_encode([
+        "cedula"      => "1020304050",
+        "valorCompra" => "20000"
+    ])
+];
+$response = $client->call('preConsulta', $params);
+```
+
+```json
+// Response exitoso
+{ "reply":"ok", "idPre":"1234567" }
+
+// Errores
+{ "reply":"Error en el documento cliente" }               // cédula < 5 dígitos
+{ "reply":"El valor minimo de compra es de 10.000 pesos" } // valorCompra < 10000
+```
+
+### 2. Ejecutar venta (pracRec)
+
+<table><thead><tr><th width="170">Campo jsonAdicional</th><th width="260">Detalle</th><th width="110">Tipo</th><th>Ejemplo</th></tr></thead><tbody><tr><td>idPre</td><td>ID devuelto por la validación previa (solo números)</td><td>string</td><td>"1234567"</td></tr></tbody></table>
+
+```php
+$data = json_encode(["idPre" => "1234567"]);
+
+$params = [
+    'idcomercio' => 01234, 'claveventa' => 1234, 'idtrans' => 123456,
+    'celular' => '3100000000',
+    'operador' => 'bw',
+    'valor' => '0',                     // el servidor fija el valor real de venta
+    'jsonAdicional' => $data,
+];
+$response = $client->call('pracRec', $params);
+```
+
+```json
+// Error de idPre vencido o inexistente
+{ "reply":"errord", "descerr":"Datos erroneos para esta venta (-2)" }
+```
+
+{% hint style="info" %}
+El `idPre` tiene una vida corta (se almacena en <code>switchData</code>). Si pasa mucho tiempo entre el paso 1 y el 2, vuelva a ejecutar la validación.
+{% endhint %}
 {% endtab %}
 {% endtabs %}
 
