@@ -6,7 +6,7 @@ Bre-B es el sistema interoperable de pagos inmediatos. Practisistemas expone un 
 * **Namespace**: `urn:PractiWs`
 
 {% hint style="warning" %}
-Antes de consumir cualquier método, el comercio debe tener activado `breb` en su perfil y estar registrado como `movii_comercio ACTIVE`. De lo contrario se devuelve `status=02` o `status=03`.
+Antes de consumir cualquier método, el comercio debe tener activado `breb` en su perfil y estar registrado y activo en la plataforma Bre-B de Practisistemas. De lo contrario se devuelve `status=02` o `status=03`.
 {% endhint %}
 
 ## Estados comunes
@@ -148,7 +148,7 @@ Resuelve una llave (alias, cédula o celular) y devuelve un `resolveId` de corta
 {
   "status":"00", "desc":"Llave encontrada",
   "resolveId":"res_abc123",
-  "keyData": { "keyValue":"brebjuanp", "accountHolderName":"J***N P***Z", "bankName":"MOVII" }
+  "keyData": { "keyValue":"brebjuanp", "accountHolderName":"J***N P***Z", "bankName":"BANCO EJEMPLO" }
 }
 ```
 {% endtab %}

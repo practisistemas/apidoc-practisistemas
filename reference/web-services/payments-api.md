@@ -1,6 +1,6 @@
 # Payments API
 
-Servicio SOAP dedicado a flujos de **recaudo y consignaciones**: QR Movii, Código de Barras, PSE y consulta de Depósitos. Vive en un endpoint independiente de la API de recargas.
+Servicio SOAP dedicado a flujos de **recaudo y consignaciones**: QR Practisistemas, Código de Barras, PSE y consulta de Depósitos. Vive en un endpoint independiente de la API de recargas.
 
 * **WSDL pruebas:** `https://recargas.practisistemas.com/pruebaws/paymentsApi_v2.php?wsdl`
 * **Namespace:** `urn:PractiWs`
@@ -16,7 +16,7 @@ Los métodos de **Bre-B** viven en este mismo endpoint pero están documentados 
 
 | Familia        | Métodos                                                                            |
 | -------------- | ---------------------------------------------------------------------------------- |
-| QR Movii       | `generarQr`, `obtenerPagosQr`, `obtenerPagosDiaQr`                                 |
+| QR Practisistemas       | `generarQr`, `obtenerPagosQr`, `obtenerPagosDiaQr`                                 |
 | Código Barras  | `generarBarcode`, `obtenerPagosBarcode`                                            |
 | PSE            | `generarLinkPse`, `obtenerPagosPse`                                                |
 | Depósitos      | `obtenerDepositos`, `obtenerLinkDepositos`                                         |
@@ -24,12 +24,12 @@ Los métodos de **Bre-B** viven en este mismo endpoint pero están documentados 
 
 ***
 
-## QR Movii
+## QR Practisistemas
 
 {% tabs %}
 {% tab title="generarQr" %}
 
-Genera la imagen del QR Movii asignado al comercio/subcomercio para recibir pagos.
+Genera la imagen del código QR Practisistemas asignado al comercio/subcomercio para recibir pagos.
 
 <table><thead><tr><th width="170">Parámetro</th><th width="260">Detalle</th><th width="110">Tipo</th><th>Ejemplo</th></tr></thead><tbody><tr><td>idcomercio</td><td>Id comercio</td><td>int</td><td>01234</td></tr><tr><td>claveventa</td><td>Clave venta</td><td>string</td><td>"1234"</td></tr><tr><td>subComercio</td><td>Id del sub-punto que recibirá los pagos</td><td>string</td><td>"1"</td></tr></tbody></table>
 
