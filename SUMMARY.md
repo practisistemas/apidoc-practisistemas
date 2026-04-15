@@ -9,6 +9,8 @@
   * [SOAP](reference/web-services/soap.md)
   * [REST](reference/web-services/rest.md)
   * [Bre-B](reference/web-services/bre-b.md)
+  * [Retiros Corresponsalía](reference/web-services/retiros-corresponsalia.md)
+  * [Depósitos Corresponsalía](reference/web-services/depositos-corresponsalia.md)
 
 ***
 
