@@ -11,6 +11,8 @@
   * [Bre-B](reference/web-services/bre-b.md)
   * [Retiros Corresponsalía](reference/web-services/retiros-corresponsalia.md)
   * [Depósitos Corresponsalía](reference/web-services/depositos-corresponsalia.md)
+  * [Pines Digitales](reference/web-services/pines-digitales.md)
+  * [Payments API](reference/web-services/payments-api.md)
 
 ***
 
